@@ -448,6 +448,7 @@
       showPhoto(+el.dataset.photo);
     } else {                                             // in-page links scroll without changing the hash, so #bride is kept
       e.preventDefault();
+      if (el.classList.contains("btn-cta") && audio && audio.paused) playMusic();   // Celebrate With Us starts the song: 50% volume, looped
       var tgt = el.getAttribute("href") === "#top" ? null : $(el.getAttribute("href"));
       var top = tgt ? tgt.getBoundingClientRect().top + window.scrollY - topbar.offsetHeight + 1 : 0;
       window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
@@ -464,7 +465,6 @@
   $("#openBtn").addEventListener("click", function () {
     gate.classList.add("open"); root.classList.remove("locked"); root.classList.add("opened");
     window.scrollTo(0, 0);
-    playMusic();                                         // starts on this tap, 50% volume, looped
     startPetals();
     setTimeout(function () { gate.hidden = true; observeReveals(); }, 2700);
   });
