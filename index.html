@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--HEAD-START-->
-<title>Aditya weds Ayushi</title>
+<title>Aditya ❤ Ayushi — Wedding Invitation</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Shubh Vivah · Aditya Raj weds Ayushi Kumari · December 9, 2026, Wednesday · Muzaffarpur">
 <meta name="theme-color" content="#FAF5EE">
 <!-- WhatsApp / Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Aditya weds Ayushi · शुभ विवाह">
+<meta property="og:title" content="Aditya ❤ Ayushi — Wedding Invitation">
+<meta property="og:site_name" content="Aditya ❤ Ayushi">
 <meta property="og:description" content="December 9, 2026, Wednesday · Muzaffarpur. Eagerly awaiting your presence.">
 <meta property="og:image" content="https://shubh-vivaah.netlify.app/assets/og-cover.jpg">
 <meta property="og:url" content="https://shubh-vivaah.netlify.app/">
@@ -110,7 +111,12 @@
 <!-- ============ TOP BAR ============ -->
 <header class="topbar" id="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top" data-brand aria-label="Back to top"></a>
+    <a class="brand" href="#top" data-scroll data-brand></a>
+    <nav class="links" aria-label="Sections">
+      <a href="#story" data-scroll data-sec="story" data-t="ui.navInvite"></a>
+      <a href="#functions" data-scroll data-sec="functions" data-t="ui.navEvents"></a>
+      <a href="#gallery" data-scroll data-sec="gallery" data-t="ui.navGallery"></a>
+    </nav>
     <div class="topbar-actions">
       <button class="lang-btn" type="button" data-action="lang"></button>
       <button class="music-btn" id="musicBtn" type="button" aria-pressed="false">
@@ -144,9 +150,25 @@
         </div>
       </div>
       <h2 class="hero-names" data-names="rise"></h2>
+      <p class="hero-quote" data-t="quote"></p>
+      <p class="date-chip"><span class="date-main" data-t="heroDate"></span><span class="date-sep" aria-hidden="true">•</span><span class="date-place" data-city></span></p>
+      <a class="btn btn-solid btn-cta" href="#story" data-scroll><span data-t="ui.celebrate"></span><span aria-hidden="true">✿</span></a>
+    </div>
+  </section>
+
+  <!-- OUR INVITATION (photo + message) -->
+  <section class="sec story" id="story" data-flowers="invitation">
+    <div class="wrap reveal">
+      <p class="eyebrow" data-t="ui.secStory"></p>
+      <h2 class="sec-title" data-t="storyTitle"></h2>
       <div class="divider" aria-hidden="true"><i></i></div>
-      <p class="hero-date" data-t="heroDate"></p>
-      <p class="hero-city" data-city></p>
+      <div class="invite-stage">
+        <img data-story-img alt="">
+        <div class="invite-overlay">
+          <p class="invite" data-story></p>
+          <p class="sub" data-t="storySub"></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -196,10 +218,7 @@
     <div class="mandala" data-mandala aria-hidden="true"></div>
     <div class="wrap">
       <p class="eyebrow reveal" data-t="ui.secFunctions"></p>
-      <div class="timeline" id="timeline">
-        <div class="thread" aria-hidden="true"><div class="thread-fill" id="threadFill"></div></div>
-        <div id="events"></div>
-      </div>
+      <div class="events-wrap" id="events"></div>
     </div>
   </section>
 
@@ -231,6 +250,8 @@
         <p class="rsvp-phones" id="rsvpPhones"></p>
       </div>
       <a class="to-top" href="#top" data-t="ui.top"></a>
+      <p class="foot" data-brandline></p>
+      <p class="foot-sub"><span data-t="heroDate"></span> • <span data-city></span></p>
     </div>
   </section>
 </main>

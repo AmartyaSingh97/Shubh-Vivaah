@@ -68,6 +68,13 @@
     if (W.assets.monogram) return '<img src="' + esc(W.assets.monogram) + '" alt="">';
     var p = pair(); return esc(p[0].initial) + "<i></i>" + esc(p[1].initial);
   }
+  function mix(a, b, t) {
+    var p = function (h, i) { return parseInt(h.substr(1 + i * 2, 2), 16); }, o = "#";
+    for (var i = 0; i < 3; i++) o += ("0" + Math.round(p(a, i) + (p(b, i) - p(a, i)) * t).toString(16)).slice(-2);
+    return o;
+  }
+  var HEART = "❤︎";
+  function brandHTML() { var p = pair(); return esc(p[0][lang]) + ' <span class="h" aria-hidden="true">' + HEART + "</span> " + esc(p[1][lang]); }
   function renderNames() {
     var p = pair(), c = T().connector;
     $$("[data-names]").forEach(function (el) {
@@ -76,19 +83,20 @@
         el.innerHTML = '<span aria-hidden="true">' + esc(p[0][lang]) + '<span class="amp">' + esc(c) + "</span>" + esc(p[1][lang]) + "</span>";
         return;
       }
-      /* English rises letter by letter; Devanagari rises word by word so matras never split */
+      /* One line: Name ❤ Name. English rises letter by letter with a colour that shifts along the name;
+         Devanagari rises word by word so matras never split. */
       var i = 0;
-      var rise = function (name) {
-        var parts = lang === "hi" ? name.split(" ") : Array.from(name);
-        return parts.map(function (ch) {
+      var rise = function (name, from, to) {
+        var parts = lang === "hi" ? name.split(" ") : Array.from(name), n = Math.max(1, parts.length - 1);
+        return parts.map(function (ch, k) {
           if (ch === " ") return " ";
-          return '<span class="ch" style="--i:' + (i++) + '">' + esc(ch) + "</span>";
+          return '<span class="ch" style="--i:' + (i++) + ";color:" + mix(from, to, lang === "hi" ? 0.5 : k / n) + '">' + esc(ch) + "</span>";
         }).join(lang === "hi" ? " " : "");
       };
-      var a = rise(p[0][lang]);
-      var mid = '<span class="amp"><span class="ch" style="--i:' + (i++) + '">' + esc(c) + "</span></span>";
-      var b = rise(p[1][lang]);
-      el.innerHTML = '<span aria-hidden="true"><span class="name">' + a + "</span>" + mid + '<span class="name">' + b + "</span></span>";
+      var a = rise(p[0][lang], "#74302A", "#B85D4B");
+      var mid = '<span class="heart"><span class="ch" style="--i:' + (i++) + '">' + HEART + "</span></span>";
+      var b = rise(p[1][lang], "#B4674A", "#A27E3B");
+      el.innerHTML = '<span aria-hidden="true">' + a + mid + b + "</span>";
     });
   }
   function renderCard() {
@@ -125,13 +133,20 @@
       ["END:VEVENT", "END:VCALENDAR"]).join("\r\n");
   }
   function renderEvents() {
-    var ui = T().ui;
+    var ui = T().ui, pin = '<svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path fill="#C29B58" d="M12 2C8.13 2 5 5.13 5 9c0 5.250 7 13 7 13s7-7.750 7-13c0-3.870-3.130-7-7-7z"/><circle cx="12" cy="9" r="2.400" fill="#FFFDF8"/></svg>';
     $("#events").innerHTML = W.events.map(function (ev, n) {
-      var t = T().events[ev.id], h = '<article class="event reveal" data-ev="' + n + '"><h3>' + esc(t.title) + "</h3>";
-      h += t.lines.map(function (l) { return '<p class="e-line">' + esc(l) + "</p>"; }).join("");
+      var t = T().events[ev.id], first = t.lines[0] || "", cut = first.indexOf(":");
+      /* The date line is shown word for word: its label ("Date" / "दिनांक") small, the rest large */
+      var label = cut > -1 ? first.slice(0, cut).trim() : "", date = cut > -1 ? first.slice(cut + 1).trim() : first;
+      var h = '<article class="day-card reveal" data-ev="' + n + '"><div class="day-banner">';
+      if (label) h += '<span class="day-no">' + esc(label) + "</span>";
+      h += '<div class="day-date">' + esc(date) + "</div>";
+      if (t.venue) h += '<span class="day-venue">' + pin + "<span>" + esc(t.venue) + "</span></span>";
+      h += '</div><div class="day-body"><div class="func">';
+      if (ev.icon) h += '<span class="func-ic" aria-hidden="true">' + esc(ev.icon) + "</span>";
+      h += '<div class="func-txt"><h3>' + esc(t.title) + "</h3>" + t.lines.slice(1).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></div>";
       if (t.note) h += '<p class="e-note">' + esc(t.note) + "</p>";
       var meta = "";
-      if (t.venue) meta += "<div><span>" + esc(ui.venue) + "</span>" + esc(t.venue) + "</div>";
       if (t.pherasMuhurat) meta += "<div><span>" + esc(ui.muhurat) + "</span>" + esc(t.pherasMuhurat) + "</div>";
       if (t.dressCode) meta += "<div><span>" + esc(ui.dressCode) + "</span>" + esc(t.dressCode) + "</div>";
       if (meta) h += '<div class="e-meta">' + meta + "</div>";
@@ -140,37 +155,40 @@
       h += '<a class="btn" target="_blank" rel="noopener" href="' + esc(gcalUrl(ev)) + '">' + esc(ui.gcal) + "</a>";
       h += '<button class="btn" type="button" data-ics="' + n + '">' + esc(ui.ics) + "</button>";
       if (ev.isWedding && W.assets.film) h += '<button class="btn" type="button" data-film>' + esc(ui.film) + "</button>";
-      return h + "</div></article>";
+      return h + "</div></div></article>";
     }).join("");
     observeReveals();
-    updateThread();
   }
   function renderGallery() {
-    var ratios = ["3 / 4", "4 / 5", "2 / 3", "3 / 4", "4 / 5", "2 / 3"], ph = W.galleryPlaceholders || 0, out = [], used = 0;
-    var frame = function () {
-      return '<div class="g-ph" style="aspect-ratio:' + ratios[used++ % ratios.length] + '"><svg class="lotus" aria-hidden="true"><use href="#i-lotus"/></svg><span>' + esc(T().ui.photoSoon) + "</span></div>";
-    };
-    var per = W.gallery.length ? Math.ceil(ph / W.gallery.length) : ph;
-    W.gallery.forEach(function (src, n) {
-      out.push('<button class="g-photo" type="button" data-photo="' + n + '" aria-label="' + (n + 1) + " / " + W.gallery.length + '"><img src="' + esc(src) + '" alt="' + esc(namesText()) + '"></button>');
-      for (var k = 0; k < per && used < ph; k++) out.push(frame());
+    /* Featured photo first (arch frame), the rest as staggered tiles. data-photo keeps the config index for the lightbox. */
+    var ph = W.galleryPlaceholders || 0, n = W.gallery.length, out = [];
+    var f = Math.max(0, W.gallery.indexOf(W.galleryFeatured));
+    var order = W.gallery.map(function (_, k) { return k; });
+    if (n) { order.splice(f, 1); order.unshift(f); }
+    order.forEach(function (k, pos) {
+      out.push('<button class="g-photo' + (pos === 0 ? " g-feature" : "") + '" type="button" data-photo="' + k + '" aria-label="' + (k + 1) + " / " + n + '"><img src="' + esc(W.gallery[k]) + '" alt="' + esc(namesText()) + '"></button>');
     });
-    while (used < ph) out.push(frame());
-    $("#masonry").innerHTML = out.join("");
+    for (var k = 0; k < ph; k++) out.push('<div class="g-ph"><svg class="lotus" aria-hidden="true"><use href="#i-lotus"/></svg><span>' + esc(T().ui.photoSoon) + "</span></div>");
+    var g = $("#masonry");
+    g.style.setProperty("--rows", Math.max(1, Math.ceil((out.length - 1) / 2)));
+    g.innerHTML = out.join("");
   }
   function renderAll() {
     root.lang = lang;
     $$("[data-t]").forEach(function (el) { var v = get(el.dataset.t); el.textContent = v == null ? "" : v; });
     $$("[data-city]").forEach(function (el) { el.textContent = W.city[lang]; });
     $$("[data-monogram]").forEach(function (el) { el.innerHTML = monogramHTML(); });
-    $("[data-brand]").innerHTML = monogramHTML();
+    $$("[data-brand], [data-brandline]").forEach(function (el) { el.innerHTML = brandHTML(); });
+    var pr = pair(), acc = function (x) { return '<span class="accent">' + x + "</span>"; };
+    $("[data-story]").innerHTML = esc(T().story).replace("{a}", acc(esc(pr[0][lang]))).replace("{b}", acc(esc(pr[1][lang]))).replace(/\*(.+?)\*/g, acc("$1"));
+    var si = $("[data-story-img]"); if (W.storyPhoto) { if (si.getAttribute("src") !== W.storyPhoto) si.src = W.storyPhoto; si.alt = namesText(); }
     $$("[data-action=lang]").forEach(function (b) { b.textContent = T().ui.langSwitch; });
     $("[data-shloka]").innerHTML = T().shloka.map(function (l) { return "<span>" + esc(l) + "</span>"; }).join("");
     $("#rsvpPhones").innerHTML = W.rsvpPhones.map(function (p) { return '<a href="tel:' + esc(W.phoneCountryCode + p) + '">' + esc(p) + "</a>"; }).join("");
     $$("[data-lb=close], #filmClose").forEach(function (b) { b.setAttribute("aria-label", T().ui.close); });
     $("[data-lb=prev]").setAttribute("aria-label", T().ui.prev);
     $("[data-lb=next]").setAttribute("aria-label", T().ui.next);
-    document.title = namesText();
+    document.title = pr[0][lang] + " ❤ " + pr[1][lang] + " — " + T().ui.titleSuffix;
     renderNames(); renderCard(); renderEvents(); renderGallery(); tick(); syncMusicBtn(); syncShare();
   }
 
@@ -206,9 +224,11 @@
     $("#threadFill").style.height = filled + "px";
     $$(".event", tl).forEach(function (e) { e.classList.toggle("lit", e.offsetTop + 30 <= filled); });
   }
+  var topbar = $("#topbar"), navLinks = $$(".links a");
   var lastY = window.scrollY, wind = 0, scrollShift = 0, ticking = false;
   function onScroll() {
     var y = window.scrollY, dy = y - lastY; lastY = y;
+    topbar.classList.toggle("scrolled", y > 24);
     scrollShift += dy; wind += Math.max(-60, Math.min(60, dy)) * 0.012;
     if (ticking) return; ticking = true;
     requestAnimationFrame(function () {
@@ -216,7 +236,11 @@
       var mid = window.innerHeight / 2;
       for (var i = 0; i < sections.length; i++) {
         var r = sections[i].getBoundingClientRect();
-        if (r.top <= mid && r.bottom >= mid) { activeFlowers = sections[i].dataset.flowers; break; }
+        if (r.top <= mid && r.bottom >= mid) {
+          activeFlowers = sections[i].dataset.flowers;
+          var id = sections[i].id; navLinks.forEach(function (a) { a.classList.toggle("active", a.dataset.sec === id); });
+          break;
+        }
       }
     });
   }
@@ -382,7 +406,7 @@
 
   /* ---------- delegated clicks ---------- */
   document.addEventListener("click", function (e) {
-    var el = e.target.closest("[data-action=lang], [data-ics], [data-film], [data-photo], a[href='#top']");
+    var el = e.target.closest("[data-action=lang], [data-ics], [data-film], [data-photo], a[data-scroll], a[href='#top']");
     if (!el) return;
     if (el.matches("[data-action=lang]")) {
       lang = lang === "en" ? "hi" : "en"; try { localStorage.setItem("sv-lang", lang); } catch (x) {}
@@ -397,8 +421,11 @@
       filmBox.hidden = false; var p = film.play(); if (p && p.catch) p.catch(function () {});
     } else if (el.matches("[data-photo]")) {
       showPhoto(+el.dataset.photo);
-    } else {                                             // back to top without losing #bride
-      e.preventDefault(); window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    } else {                                             // in-page links scroll without changing the hash, so #bride is kept
+      e.preventDefault();
+      var tgt = el.getAttribute("href") === "#top" ? null : $(el.getAttribute("href"));
+      var top = tgt ? tgt.getBoundingClientRect().top + window.scrollY - topbar.offsetHeight + 1 : 0;
+      window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
     }
   });
   window.addEventListener("hashchange", renderAll);

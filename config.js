@@ -34,14 +34,20 @@ window.WEDDING = {
      date = all-day calendar entry. mapsUrl = a Google Maps link used as-is;
      otherwise mapsQuery is searched. Both blank = no Directions button. */
   events: [
-    { id: "tilak", date: "2026-12-04", mapsQuery: "", mapsUrl: "https://maps.app.goo.gl/WXsgYWhxC4WnuBVh6?g_st=aw" },
-    { id: "haldi", date: "2026-12-08", mapsQuery: "" },
-    { id: "vivah", date: "2026-12-09", isWedding: true,
+    { id: "tilak", icon: "🪔", date: "2026-12-04", mapsQuery: "", mapsUrl: "https://maps.app.goo.gl/WXsgYWhxC4WnuBVh6?g_st=aw" },
+    { id: "haldi", icon: "🌼", date: "2026-12-08", mapsQuery: "" },
+    { id: "vivah", icon: "💐", date: "2026-12-09", isWedding: true,
       mapsQuery: "Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur" }
   ],
 
+  /* Photo behind the "Our Invitation" message */
+  storyPhoto: "assets/photo-3.JPG",
+
   /* Gallery: add photo paths here. `placeholders` = empty Jharokha frames. */
   gallery: ["assets/photo-1.jpg", "assets/photo-2.jpg", "assets/photo-3.JPG", "assets/photo-4.JPG", "assets/photo-5.JPG"],
+  /* Photo shown large in the arch frame at the centre of the gallery.
+     Blank = the first photo in the list above. */
+  galleryFeatured: "assets/photo-5.JPG",
   galleryPlaceholders: 0,
 
   /* R.S.V.P. numbers exactly as printed on the card */

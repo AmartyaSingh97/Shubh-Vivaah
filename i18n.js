@@ -10,6 +10,12 @@ window.I18N = {
     connector: "Weds",
     heroDate: "December 9, 2026, Wednesday",
 
+    /* Decorative copy (not from the card). {a} {b} = the couple, *word* = accent. */
+    quote: "“Two hearts, one sacred promise — joined by love, guided by blessings, and celebrated with everyone we hold dear.”",
+    storyTitle: "Two Families, One Celebration",
+    story: "With joyful hearts and the blessings of our elders, we invite you to the wedding of {a} and {b}. As they begin their *forever*, your presence will make the moment complete.",
+    storySub: "Come share the colours of haldi, the music of sangeet and the warmth of two families becoming one.",
+
     card: {
       salutation: "Respected Sir/Madam,",
       grace: "With the infinite grace of Jagat Janani Maa Janki,",
@@ -54,6 +60,8 @@ window.I18N = {
 
     ui: {
       open: "Open Invitation",
+      titleSuffix: "Wedding Invitation", celebrate: "Celebrate With Us", secStory: "Our Invitation",
+      navInvite: "Invitation", navEvents: "Events", navGallery: "Gallery",
       langSwitch: "हिंदी",
       playMusic: "Play music", pauseMusic: "Pause music", noMusic: "Music file not added yet",
       secBlessings: "Blessings",
@@ -81,6 +89,11 @@ window.I18N = {
     om: "ॐ श्री गणेशाय नमः",
     connector: "संग",
     heroDate: "09 दिसम्बर 2026 बुधवार",
+
+    quote: "“दो दिल, एक पवित्र वचन — प्रेम से जुड़े, आशीर्वाद से सँवरे, और अपनों के संग मनाया जाने वाला उत्सव ।”",
+    storyTitle: "दो परिवार, एक उत्सव",
+    story: "हर्षित हृदय और बड़ों के आशीर्वाद के साथ, हम आपको {a} और {b} के *शुभ विवाह* में सादर आमंत्रित करते हैं । इस मंगल आरंभ में आपकी उपस्थिति ही इस क्षण को पूर्ण करेगी ।",
+    storySub: "आइए, हल्दी के रंग, संगीत की धुन और दो परिवारों के मिलन की खुशी में शामिल हों ।",
 
     card: {
       salutation: "मान्यवर,",
@@ -123,6 +136,8 @@ window.I18N = {
 
     ui: {
       open: "निमंत्रण खोलें",
+      titleSuffix: "शुभ विवाह निमंत्रण", celebrate: "उत्सव में शामिल हों", secStory: "हमारा निमंत्रण",
+      navInvite: "निमंत्रण", navEvents: "कार्यक्रम", navGallery: "चित्र",
       langSwitch: "English",
       playMusic: "संगीत चलाएँ", pauseMusic: "संगीत रोकें", noMusic: "संगीत फ़ाइल अभी जोड़ी नहीं गई",
       secBlessings: "मंगलाचरण",
