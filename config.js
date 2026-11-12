@@ -8,7 +8,7 @@ window.WEDDING = {
 
   /* Full public URL once deployed, e.g. "https://example.github.io/shubh-vivah/".
      Used for Share / Copy link. Blank = use the address in the browser. */
-  siteUrl: "",
+  siteUrl: "https://shubh-vivaah.netlify.app/",
 
   /* Short names for the gate, hero and monogram */
   groom: { en: "Aditya", hi: "आदित्य", initial: "A" },
@@ -31,17 +31,18 @@ window.WEDDING = {
   songVolume: 0.5,
 
   /* Functions, in time order. Titles/lines come from i18n.js by id.
-     date = all-day calendar entry. mapsQuery blank = no Directions button. */
+     date = all-day calendar entry. mapsUrl = a Google Maps link used as-is;
+     otherwise mapsQuery is searched. Both blank = no Directions button. */
   events: [
-    { id: "tilak", date: "2026-12-04", mapsQuery: "" },
+    { id: "tilak", date: "2026-12-04", mapsQuery: "", mapsUrl: "https://maps.app.goo.gl/WXsgYWhxC4WnuBVh6?g_st=aw" },
     { id: "haldi", date: "2026-12-08", mapsQuery: "" },
     { id: "vivah", date: "2026-12-09", isWedding: true,
       mapsQuery: "Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur" }
   ],
 
   /* Gallery: add photo paths here. `placeholders` = empty Jharokha frames. */
-  gallery: ["assets/photo-1.jpg", "assets/photo-2.jpg"],
-  galleryPlaceholders: 4,
+  gallery: ["assets/photo-1.jpg", "assets/photo-2.jpg", "assets/photo-3.JPG", "assets/photo-4.JPG", "assets/photo-5.JPG"],
+  galleryPlaceholders: 0,
 
   /* R.S.V.P. numbers exactly as printed on the card */
   rsvpPhones: ["9431603985", "9431813159"],

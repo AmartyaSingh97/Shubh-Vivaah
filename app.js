@@ -136,7 +136,7 @@
       if (t.dressCode) meta += "<div><span>" + esc(ui.dressCode) + "</span>" + esc(t.dressCode) + "</div>";
       if (meta) h += '<div class="e-meta">' + meta + "</div>";
       h += '<div class="e-actions">';
-      if (ev.mapsQuery) h += '<a class="btn btn-solid" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(ev.mapsQuery) + '">' + esc(ui.directions) + "</a>";
+      if (ev.mapsUrl || ev.mapsQuery) h += '<a class="btn btn-solid" target="_blank" rel="noopener" href="' + esc(ev.mapsUrl || "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(ev.mapsQuery)) + '">' + esc(ui.directions) + "</a>";
       h += '<a class="btn" target="_blank" rel="noopener" href="' + esc(gcalUrl(ev)) + '">' + esc(ui.gcal) + "</a>";
       h += '<button class="btn" type="button" data-ics="' + n + '">' + esc(ui.ics) + "</button>";
       if (ev.isWedding && W.assets.film) h += '<button class="btn" type="button" data-film>' + esc(ui.film) + "</button>";
