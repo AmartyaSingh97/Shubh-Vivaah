@@ -254,6 +254,7 @@
   function onScroll() {
     var y = window.scrollY, dy = y - lastY; lastY = y;
     topbar.classList.toggle("scrolled", y > 24);
+    if (!scrolledOnce && y > 8 && root.classList.contains("opened")) { scrolledOnce = true; playMusic(); }   // song starts on the first scroll
     scrollShift += dy; wind += Math.max(-60, Math.min(60, dy)) * 0.012;
     if (ticking) return; ticking = true;
     requestAnimationFrame(function () {
@@ -358,7 +359,8 @@
   var audio = null, musicOk = !!W.assets.song, wantMusic = false, pausedBy = null;
   var musicBtn = $("#musicBtn");
   if (musicOk) {
-    audio = new Audio(); audio.loop = true; audio.preload = "metadata"; audio.volume = W.songVolume;
+    audio = new Audio(); audio.loop = false; audio.preload = "metadata"; audio.volume = W.songVolume;
+    audio.addEventListener("ended", function () { seekStart(); if (wantMusic) playMusic(); });   // loop back to songStart, not 0:00
     audio.addEventListener("error", function () { musicOk = false; wantMusic = false; syncMusicBtn(); });
     audio.addEventListener("play", syncMusicBtn); audio.addEventListener("pause", syncMusicBtn);
     audio.src = W.assets.song;
@@ -370,7 +372,20 @@
     musicBtn.setAttribute("aria-label", !musicOk ? ui.noMusic : on ? ui.pauseMusic : ui.playMusic);
     musicBtn.title = musicBtn.getAttribute("aria-label");
   }
-  function playMusic() { if (!musicOk) return; wantMusic = true; var p = audio.play(); if (p && p.catch) p.catch(function () { syncMusicBtn(); }); }
+  var songBegun = false;
+  /* Browsers only allow sound after a tap. The Open Invitation tap "unlocks" the song silently,
+     so it can then start by itself on the guest's first scroll. */
+  var unlocked = false, scrolledOnce = false;
+  function unlockMusic() {
+    if (!musicOk || unlocked) return; unlocked = true; audio.muted = true;
+    var done = function () { if (!wantMusic) audio.pause(); audio.muted = false; };
+    var p = audio.play(); if (p && p.then) p.then(done, function () { audio.muted = false; }); else done();
+  }
+  function seekStart() { try { audio.currentTime = W.songStart || 0; } catch (e) {} }
+  function playMusic() {
+    if (!musicOk) return; wantMusic = true;
+    if (!songBegun) { songBegun = true; if (audio.readyState >= 1) seekStart(); else audio.addEventListener("loadedmetadata", seekStart, { once: true }); }
+    var p = audio.play(); if (p && p.catch) p.catch(function () { syncMusicBtn(); }); }
   musicBtn.addEventListener("click", function () { if (!musicOk) return; if (audio.paused) playMusic(); else { wantMusic = false; audio.pause(); } });
   document.addEventListener("visibilitychange", function () {
     if (!audio || !musicOk) return;
@@ -465,6 +480,7 @@
   $("#openBtn").addEventListener("click", function () {
     gate.classList.add("open"); root.classList.remove("locked"); root.classList.add("opened");
     window.scrollTo(0, 0);
+    unlockMusic();
     startPetals();
     setTimeout(function () { gate.hidden = true; observeReveals(); }, 2700);
   });

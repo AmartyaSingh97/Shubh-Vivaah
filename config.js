@@ -29,6 +29,7 @@ window.WEDDING = {
     filmPoster: ""
   },
   songVolume: 0.5,
+  songStart: 6,                   // seconds into the track where the song begins (and loops back to)
 
   /* Functions, in time order. `parts` = the functions listed inside each day card,
      as [key, icon]; their names and one-line descriptions are in i18n.js.
