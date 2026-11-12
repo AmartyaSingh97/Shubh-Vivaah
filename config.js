@@ -1,0 +1,49 @@
+/* ------------------------------------------------------------------
+   WEDDING DATA — edit this file only. All wording lives in i18n.js.
+   Leave a field empty ("") to hide it on the site. Nothing is invented:
+   a blank field simply does not render.
+------------------------------------------------------------------- */
+window.WEDDING = {
+  timezone: "Asia/Kolkata",
+
+  /* Full public URL once deployed, e.g. "https://example.github.io/shubh-vivah/".
+     Used for Share / Copy link. Blank = use the address in the browser. */
+  siteUrl: "",
+
+  /* Short names for the gate, hero and monogram */
+  groom: { en: "Aditya", hi: "आदित्य", initial: "A" },
+  bride: { en: "Ayushi", hi: "आयुषी", initial: "A" },
+
+  city: { en: "Muzaffarpur", hi: "मुजफ्फरपुर" },
+
+  /* Countdown target (ISO with +05:30). The card gives no Phera muhurat,
+     so this points at the one time it does give for the wedding day:
+     Baraat departure, 9 December 2026, 3:00 PM. Change it when the
+     muhurat is fixed, and set pherasMuhurat in i18n.js. */
+  countdownTo: "2026-12-09T15:00:00+05:30",
+
+  assets: {
+    monogram: "",                 // e.g. "assets/monogram.png" — blank = typographic A · A seal
+    song: "assets/song.mp3",      // instrumental mp3 — drop the file in /assets
+    film: "",                     // e.g. "assets/invitation-film.mp4" — blank hides the button
+    filmPoster: ""
+  },
+  songVolume: 0.5,
+
+  /* Functions, in time order. Titles/lines come from i18n.js by id.
+     date = all-day calendar entry. mapsQuery blank = no Directions button. */
+  events: [
+    { id: "tilak", date: "2026-12-04", mapsQuery: "" },
+    { id: "haldi", date: "2026-12-08", mapsQuery: "" },
+    { id: "vivah", date: "2026-12-09", isWedding: true,
+      mapsQuery: "Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur" }
+  ],
+
+  /* Gallery: add photo paths here. `placeholders` = empty Jharokha frames. */
+  gallery: ["assets/photo-1.jpg", "assets/photo-2.jpg"],
+  galleryPlaceholders: 4,
+
+  /* R.S.V.P. numbers exactly as printed on the card */
+  rsvpPhones: ["9431603985", "9431813159"],
+  phoneCountryCode: "+91"
+};
