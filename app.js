@@ -50,6 +50,25 @@
       '<circle cx="20" cy="44" r="3" fill="currentColor"/><circle cx="20" cy="58" r="13" stroke-width="2.6"/><circle cx="20" cy="58" r="9.500" stroke-width=".7"/>' +
       '</svg>';
   }
+  /* Hero Jharokha: cusped arch on a stepped plinth, soft niche, finial, petal halo behind the seal */
+  function jharokhaSVG() {
+    var petals = "", dots = "", k;
+    for (k = 0; k < 16; k++) petals += '<path transform="rotate(' + k * 22.5 + ' 150 250)" d="M150 185C157 178 157 169 150 162C143 169 143 178 150 185Z"/>';
+    for (k = 0; k < 48; k++) dots += '<circle transform="rotate(' + k * 7.5 + ' 150 250)" cx="150" cy="156" r=".9"/>';
+    return '<svg class="jh-svg" viewBox="0 0 300 424" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' +
+      '<defs><linearGradient id="niche" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E8D0" stop-opacity=".95"/><stop offset=".55" stop-color="#FBF3E6" stop-opacity=".7"/><stop offset="1" stop-color="#FAF5EE" stop-opacity="0"/></linearGradient></defs>' +
+      '<path class="jh-fill" stroke="none" fill="url(#niche)" d="' + archPath(27, 44, 246, 356) + '"/>' +
+      '<path class="jh-line" pathLength="1" stroke-width="1.7" d="' + archPath(0, 0, 300, 400).replace(/Z$/, "") + '"/>' +
+      '<path class="jh-line jh-line2" pathLength="1" stroke-width=".9" d="' + archPath(27, 44, 246, 356).replace(/Z$/, "") + '"/>' +
+      '<g class="jh-orn" stroke-width="1.1">' +
+        '<path d="M150 28V17"/><path d="M150 5L155 11L150 17L145 11Z" fill="currentColor" fill-opacity=".25"/><circle cx="150" cy="2.200" r="1.600" fill="currentColor" stroke="none"/>' +
+        '<path d="M19 170H42M258 170H281M23 176H38M262 176H277"/>' +                                       // pillar capitals
+        '<path d="M10 400H290M18 408H282M28 416H272"/>' +                                                   // stepped plinth
+        '<path d="M51.600 392H248.400" stroke-width=".7"/>' +
+        '<g stroke-width=".8" opacity=".9">' + petals + '</g><g fill="currentColor" stroke="none" opacity=".7">' + dots + "</g>" +
+        '<use href="#i-lotus" x="121" y="348" width="58" height="36"/>' +
+      "</g></svg>";
+  }
   function mandalaSVG() {
     var s = '<svg viewBox="-100 -100 200 200" fill="none" stroke="currentColor" stroke-width=".35">';
     [98, 82, 60, 38, 17].forEach(function (r) { s += '<circle r="' + r + '"/>'; });
@@ -137,14 +156,19 @@
     $("#events").innerHTML = W.events.map(function (ev, n) {
       var t = T().events[ev.id], first = t.lines[0] || "", cut = first.indexOf(":");
       /* The date line is shown word for word: its label ("Date" / "दिनांक") small, the rest large */
-      var label = cut > -1 ? first.slice(0, cut).trim() : "", date = cut > -1 ? first.slice(cut + 1).trim() : first;
+      var date = cut > -1 ? first.slice(cut + 1).trim() : first;
+      /* Banner: the function title and date exactly as given. Body: the day broken into its functions. */
       var h = '<article class="day-card reveal" data-ev="' + n + '"><div class="day-banner">';
-      if (label) h += '<span class="day-no">' + esc(label) + "</span>";
-      h += '<div class="day-date">' + esc(date) + "</div>";
+      h += '<span class="day-no">' + esc(t.title) + '</span><div class="day-date">' + esc(date) + "</div>";
       if (t.venue) h += '<span class="day-venue">' + pin + "<span>" + esc(t.venue) + "</span></span>";
-      h += '</div><div class="day-body"><div class="func">';
-      if (ev.icon) h += '<span class="func-ic" aria-hidden="true">' + esc(ev.icon) + "</span>";
-      h += '<div class="func-txt"><h3>' + esc(t.title) + "</h3>" + t.lines.slice(1).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></div>";
+      h += '</div><div class="day-body"><div class="func-list">';
+      var parts = (ev.parts || []).filter(function (p) { return t.parts && t.parts[p[0]]; });
+      if (parts.length) h += parts.map(function (p) {
+        var x = t.parts[p[0]];
+        return '<div class="func"><span class="func-ic" aria-hidden="true">' + esc(p[1]) + '</span><div class="func-txt"><h3>' + esc(x.name) + "</h3>" + (x.desc ? "<p>" + esc(x.desc) + "</p>" : "") + "</div></div>";
+      }).join("");
+      else h += '<div class="func"><div class="func-txt"><h3>' + esc(t.title) + "</h3>" + t.lines.slice(1).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></div>";
+      h += "</div>";
       if (t.note) h += '<p class="e-note">' + esc(t.note) + "</p>";
       var meta = "";
       if (t.pherasMuhurat) meta += "<div><span>" + esc(ui.muhurat) + "</span>" + esc(t.pherasMuhurat) + "</div>";
@@ -160,6 +184,7 @@
     observeReveals();
   }
   function renderGallery() {
+    if (!$("#masonry")) return;                         // gallery section removed from the page
     /* Featured photo first (arch frame), the rest as staggered tiles. data-photo keeps the config index for the lightbox. */
     var ph = W.galleryPlaceholders || 0, n = W.gallery.length, out = [];
     var f = Math.max(0, W.gallery.indexOf(W.galleryFeatured));
@@ -434,6 +459,7 @@
   var gate = $("#gate");
   $$(".door-face").forEach(function (d) { d.innerHTML = doorSVG(); });
   $$("[data-mandala]").forEach(function (m) { m.innerHTML = mandalaSVG(); });
+  $$("[data-jharokha]").forEach(function (j) { j.insertAdjacentHTML("afterbegin", jharokhaSVG()); });
   root.classList.add("locked");
   $("#openBtn").addEventListener("click", function () {
     gate.classList.add("open"); root.classList.remove("locked"); root.classList.add("opened");

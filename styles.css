@@ -310,6 +310,8 @@ html[lang="hi"] .to-top { letter-spacing: .04em; font-size: 15px; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .reveal, .ch { opacity: 1; transform: none; }
   .arch { stroke-dashoffset: 0; }
+  .jh-line { stroke-dashoffset: 0; }
+  .jh-fill, .jh-orn { opacity: 1; }
   #petals { display: none; }
 }
 
@@ -319,6 +321,8 @@ html[lang="hi"] .to-top { letter-spacing: .04em; font-size: 15px; }
   .reveal, .ch { opacity: 1 !important; transform: none !important; animation: none !important; }
   .masonry > * { transform: none !important; break-inside: avoid; }
   .arch { stroke-dashoffset: 0 !important; animation: none !important; }
+  .jh-line { stroke-dashoffset: 0 !important; animation: none !important; }
+  .jh-fill, .jh-orn { opacity: 1 !important; animation: none !important; }
   .sec { padding-block: 40px; break-inside: avoid; }
   .hero { padding-top: 40px; }
   .card-stationery, .event { box-shadow: none; break-inside: avoid; }
@@ -411,6 +415,33 @@ html[lang="hi"] .func-txt h3 { line-height: 1.55; font-size: clamp(21px, 5.800vw
 .day-body .e-actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
 .day-body .e-actions .btn { min-height: 40px; padding: 8px 15px; font-size: 11px; letter-spacing: .1em; }
 html[lang="hi"] .day-body .e-actions .btn { font-size: 14px; letter-spacing: 0; }
+
+/* functions listed inside a day card, joined by a fine thread */
+.func-list { display: flex; flex-direction: column; gap: 22px; }
+.func-list .func { position: relative; align-items: flex-start; }
+.func-list .func:not(:last-child)::before { content: ""; position: absolute; left: 27px; top: 58px; bottom: -22px; width: 2px; border-radius: 2px; background: linear-gradient(180deg, rgba(194,155,88,.75), rgba(184,93,75,.25)); }
+.func-list .func-txt { padding-top: 4px; }
+.func-list .func-txt h3 { color: var(--rose); }
+.func-list .func-txt p { font-size: 15.500px; }
+.day-no { letter-spacing: .26em; }
+
+/* hero Jharokha v3 */
+.jharokha { width: min(70vw, 268px); aspect-ratio: 300 / 424; margin: 18px auto 24px; }
+.jh-svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--gold); overflow: visible; }
+.jh-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.jh-line2 { opacity: .75; }
+.jh-fill, .jh-orn { opacity: 0; }
+html.opened .jh-line { animation: draw 2.800s ease 1.500s forwards; }
+html.opened .jh-line2 { animation-delay: 2s; }
+html.opened .jh-fill { animation: fadein 1.600s ease 2.600s forwards; }
+html.opened .jh-orn { animation: fadein 1.400s ease 3.200s forwards; }
+@keyframes fadein { to { opacity: 1; } }
+.jharokha .seal-lg { position: absolute; left: 50%; top: 58.960%; width: 41.500%; height: auto; aspect-ratio: 1; margin: 0; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 34% 28%, #FFFEFB, #F6ECDD 62%, #E6D4B8);
+  box-shadow: 0 0 0 1px var(--gold), 0 0 0 5px var(--paper), 0 0 0 6px rgba(194,155,88,.7), 0 14px 26px -8px rgba(91,48,39,.35), inset 0 -6px 14px rgba(194,155,88,.18); }
+.jharokha .seal-lg::before { content: ""; position: absolute; inset: 7%; border-radius: 50%; border: 1px dotted rgba(148,115,58,.75); }
+.jharokha .seal-lg .seal-inner { font-size: clamp(34px, 10.500vw, 42px); font-weight: 600; gap: 6px; text-shadow: 0 1px 0 rgba(255,255,255,.7); }
+.jharokha .seal-lg .seal-inner i { width: 6px; height: 6px; }
 
 /* closing signature */
 .foot { margin-top: 8px; font-family: var(--f-display); font-weight: 600; font-size: 24px; color: var(--rose); }

@@ -2,7 +2,8 @@
    TRANSLATIONS
    `card`, `events`, `awaiting` and `sender` are the family's wording,
    copied character for character from the card text. Do not rephrase.
-   `ui` holds only interface labels.
+   `ui` holds only interface labels. `parts` (function names and one-line
+   descriptions inside each day card), `quote` and `story*` are decorative copy.
 ------------------------------------------------------------------- */
 window.I18N = {
   en: {
@@ -40,14 +41,28 @@ window.I18N = {
     events: {
       tilak: {
         title: "Tilak and Faldan",
+        parts: {
+          tilak: { name: "Tilak", desc: "An auspicious tilak and blessings for the groom" },
+          faldan: { name: "Faldan", desc: "Fruits, gifts and good wishes exchanged" },
+          dinner: { name: "Dinner", desc: "Evening from 06:00 PM onwards" }
+        },
         lines: ["Date: December 4, 2026, Friday", "Dinner - Evening from 06:00 PM onwards"]
       },
       haldi: {
         title: "Haldi, Mehendi and Sangeet",
+        parts: {
+          haldi: { name: "Haldi", desc: "The golden glow of turmeric and blessings" },
+          mehendi: { name: "Mehendi", desc: "Henna, laughter and togetherness" },
+          sangeet: { name: "Sangeet", desc: "An evening of music and dance" }
+        },
         lines: ["Date: December 8, 2026, Tuesday"]
       },
       vivah: {
         title: "Wedding Ceremony",
+        parts: {
+          baraat: { name: "Baraat", desc: "Departs from Village Chandauli at 3:00 PM" },
+          vivah: { name: "Wedding Ceremony", desc: "The sacred vows at Shivam Vivah Bhawan" }
+        },
         lines: ["Date: December 9, 2026, Wednesday"],
         note: "Baraat will depart from my residence (Village Chandauli) at 3:00 PM in the evening for Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur.",
         venue: "Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur",
@@ -116,14 +131,28 @@ window.I18N = {
     events: {
       tilak: {
         title: "तिलक एवं फलदान",
+        parts: {
+          tilak: { name: "तिलक", desc: "वर को शुभ तिलक एवं आशीर्वाद" },
+          faldan: { name: "फलदान", desc: "फल, उपहार एवं शुभकामनाओं का आदान-प्रदान" },
+          dinner: { name: "प्रीति-भोज", desc: "संध्या 06 बजे से" }
+        },
         lines: ["दिनांक : 04 दिसम्बर 2026 शुक्रवार ।।", "प्रीति-भोज-संध्या 06 बजे से"]
       },
       haldi: {
         title: "हल्दी, मेंहदी एवं संगीत",
+        parts: {
+          haldi: { name: "हल्दी", desc: "हल्दी का सुनहरा रंग और आशीर्वाद" },
+          mehendi: { name: "मेंहदी", desc: "मेंहदी, हँसी और अपनों का साथ" },
+          sangeet: { name: "संगीत", desc: "गीत-संगीत और नृत्य की शाम" }
+        },
         lines: ["दिनांक : 08 दिसम्बर 2026, मंगलवार ।।"]
       },
       vivah: {
         title: "शुभ विवाह",
+        parts: {
+          baraat: { name: "बारात", desc: "ग्राम चन्दौली से संध्या 3 बजे प्रस्थान" },
+          vivah: { name: "शुभ विवाह", desc: "शिवम विवाह भवन में पवित्र फेरे" }
+        },
         lines: ["दिनांक : 09 दिसम्बर 2026 बुधवार ।।"],
         note: "बारात मेरे निवास स्थान ग्राम चन्दौली से संध्या 3 बजे शिवम विवाह भवन, भीखनपुर, NH-77, मुजफ्फरपुर के लिए प्रस्थान करेगी ।",
         venue: "शिवम विवाह भवन, भीखनपुर, NH-77, मुजफ्फरपुर",

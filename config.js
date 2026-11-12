@@ -30,19 +30,23 @@ window.WEDDING = {
   },
   songVolume: 0.5,
 
-  /* Functions, in time order. Titles/lines come from i18n.js by id.
+  /* Functions, in time order. `parts` = the functions listed inside each day card,
+     as [key, icon]; their names and one-line descriptions are in i18n.js.
+     Functions, in time order. Titles/lines come from i18n.js by id.
      date = all-day calendar entry. mapsUrl = a Google Maps link used as-is;
      otherwise mapsQuery is searched. Both blank = no Directions button. */
   events: [
-    { id: "tilak", icon: "🪔", date: "2026-12-04", mapsQuery: "", mapsUrl: "https://maps.app.goo.gl/WXsgYWhxC4WnuBVh6?g_st=aw" },
-    { id: "haldi", icon: "🌼", date: "2026-12-08", mapsQuery: "" },
-    { id: "vivah", icon: "💐", date: "2026-12-09", isWedding: true,
+    { id: "tilak", parts: [["tilak", "🪔"], ["faldan", "🧺"], ["dinner", "🍽️"]], date: "2026-12-04", mapsQuery: "", mapsUrl: "https://maps.app.goo.gl/WXsgYWhxC4WnuBVh6?g_st=aw" },
+    { id: "haldi", parts: [["haldi", "🌼"], ["mehendi", "🌿"], ["sangeet", "🎶"]], date: "2026-12-08", mapsQuery: "" },
+    { id: "vivah", parts: [["baraat", "🐎"], ["vivah", "💐"]], date: "2026-12-09", isWedding: true,
       mapsQuery: "Shivam Vivah Bhawan, Bhikhanpur, NH-77, Muzaffarpur" }
   ],
 
   /* Photo behind the "Our Invitation" message */
   storyPhoto: "assets/photo-3.JPG",
 
+  /* The gallery section is currently removed from index.html, so the three
+     gallery settings below are unused. */
   /* Gallery: add photo paths here. `placeholders` = empty Jharokha frames. */
   gallery: ["assets/photo-1.jpg", "assets/photo-2.jpg", "assets/photo-3.JPG", "assets/photo-4.JPG", "assets/photo-5.JPG"],
   /* Photo shown large in the arch frame at the centre of the gallery.
